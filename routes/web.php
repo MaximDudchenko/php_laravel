@@ -19,4 +19,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::name('admin')->prefix('admin')->middleware('admin')->group(function() {
+    Route::get('/dashboard', function() {
+        return view('dashboard', ['role' => 'Admin']);
+    })->name('.dashboard');
+});
+
+Route::get('/dashboard', function() {
+    return view('dashboard', ['role' => 'Customer']);
+})->name('dashboard');
