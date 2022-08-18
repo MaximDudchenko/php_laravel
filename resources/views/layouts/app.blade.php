@@ -30,9 +30,11 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('admin.products.index') }}">{{ __('Products') }}</a>
-                        </li>
+                        @auth
+                            @if(Request::is('admin/*'))
+                                @include('navigations.admin')
+                            @endif
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->
