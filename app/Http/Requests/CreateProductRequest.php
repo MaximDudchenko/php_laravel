@@ -47,7 +47,8 @@ class CreateProductRequest extends FormRequest
             'discount' => ['required', 'numeric', 'min:0', 'max:99'],
             'in_stock' => ['required', 'numeric', 'min:0'],
             'category' => ['required', 'numeric'],
-            'thumbnail' => ['required', 'image:jpeg,jpg,png']
+            'thumbnail' => ['required', 'image:jpeg,jpg,png'],
+            'images.*' => ['image:jpeg,jpg,png']
         ];
     }
 }

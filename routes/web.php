@@ -19,6 +19,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::delete('ajax/images/{image}',
+    \App\Http\Controllers\Ajax\RemoveImageController::class
+)->middleware(['admin'])->name('ajax.images.delete');
+
 Route::name('admin.')->prefix('admin')->middleware('admin')->group(function() {
     Route::get('/dashboard', function() {
         return view('dashboard', ['role' => 'Admin']);
@@ -29,4 +33,4 @@ Route::name('admin.')->prefix('admin')->middleware('admin')->group(function() {
 
 Route::get('/dashboard', function() {
     return view('dashboard', ['role' => 'Customer']);
-})->name('dashboard');
+})->middleware('auth')->name('dashboard');
