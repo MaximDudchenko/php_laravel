@@ -29,6 +29,7 @@ Route::name('admin.')->prefix('admin')->middleware('admin')->group(function() {
     })->name('dashboard');
 
     Route::resource('products', \App\Http\Controllers\Admin\ProductsController::class)->except(['show']);
+    Route::resource('categories', \App\Http\Controllers\Admin\CategoriesController::class)->except(['show']);
 });
 
 Route::get('/dashboard', function() {
