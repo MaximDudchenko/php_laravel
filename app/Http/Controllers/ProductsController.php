@@ -16,6 +16,16 @@ class ProductsController extends Controller
 
     public function show(Product $product)
     {
-        return view('products.show', compact('product'));
+        $userRating = $product->getUserRating();
+        $rating = is_null($userRating) ? 0 : $userRating->rating;
+
+        return view('products.show', compact('product', 'rating'));
+    }
+
+    public function addRating(Request $request, Product $product)
+    {
+        $product->rateOnce($request->get('star'));
+
+        return redirect()->back();
     }
 }

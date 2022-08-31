@@ -30,6 +30,10 @@ Route::name('admin.')->prefix('admin')->middleware('admin')->group(function() {
     Route::resource('categories', \App\Http\Controllers\Admin\CategoriesController::class)->except(['show']);
 });
 
+Route::middleware('auth')->group(function() {
+    Route::post('product/{product}/rating/add', [\App\Http\Controllers\ProductsController::class, 'addRating'])->name('product.rating.add');
+});
+
 Route::get('/dashboard', function() {
     return view('dashboard', ['role' => 'Customer']);
 })->middleware('auth')->name('dashboard');

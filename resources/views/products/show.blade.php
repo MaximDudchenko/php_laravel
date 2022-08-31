@@ -18,6 +18,27 @@
             <p>Price: {{ $product->end_price }}$</p>
             <p>SKU: {{ $product->SKU }}</p>
             <p>In stock: {{ $product->in_stock }}</p>
+            <p>Rating: {{ $product->averageRating() }}</p>
+            @auth
+                <form class="form-horizontal post-stars" action="{{ route('product.rating.add', $product) }}" id="addStar" method="POST">
+                    @csrf
+                    @method('post')
+                    <div class="form-group required">
+                        <div class="col-sm-3 stars">
+                            @for($i = 5; $i >= 1; $i--)
+                                <input class="star star-{{$i}}"
+                                       value="{{$i}}"
+                                       id="star-{{$i}}"
+                                       type="radio"
+                                       name="star"
+                                    {{ $i == $rating ? 'checked' : '' }}
+                                />
+                                <label class="star star-{{$i}}" for="star-{{$i}}"></label>
+                            @endfor
+                        </div>
+                    </div>
+                </form>
+            @endauth
             <hr>
             <div>
                 <p>Product Category: <b> @include('categories.parts.category_view', ['category' => $product->category])</b></p>
@@ -54,4 +75,6 @@
         </div>
     </div>
     <hr>
+
+    @vite(['resources/js/product-actions.js']);
 @endsection
