@@ -18,7 +18,7 @@
             <p>Price: {{ $product->end_price }}$</p>
             <p>SKU: {{ $product->SKU }}</p>
             <p>In stock: {{ $product->in_stock }}</p>
-            <p>Rating: {{ $product->averageRating() }}</p>
+            <p>Rating: {{ round($product->averageRating(), 2) }}</p>
             @auth
                 <form class="form-horizontal post-stars" action="{{ route('product.rating.add', $product) }}" id="addStar" method="POST">
                     @csrf

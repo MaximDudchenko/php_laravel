@@ -32,6 +32,17 @@ Route::name('admin.')->prefix('admin')->middleware('admin')->group(function() {
 
 Route::middleware('auth')->group(function() {
     Route::post('product/{product}/rating/add', [\App\Http\Controllers\ProductsController::class, 'addRating'])->name('product.rating.add');
+
+});
+
+Route::middleware('auth')->name('account.')->prefix('account')->group(function() {
+    Route::get('/', [\App\Http\Controllers\Account\UserController::class, 'index'])->name('index');
+    Route::get('{user}/edit', [\App\Http\Controllers\Account\UserController::class, 'edit'])
+        ->name('edit')
+        ->middleware('can:view,user');
+    Route::put('{user}', [\App\Http\Controllers\Account\UserController::class, 'update'])
+        ->name('update')
+        ->middleware('can:update,user');
 });
 
 Route::get('/dashboard', function() {
