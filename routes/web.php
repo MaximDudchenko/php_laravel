@@ -33,6 +33,8 @@ Route::name('admin.')->prefix('admin')->middleware('admin')->group(function() {
 Route::middleware('auth')->group(function() {
     Route::post('product/{product}/rating/add', [\App\Http\Controllers\ProductsController::class, 'addRating'])->name('product.rating.add');
 
+    Route::get('wishlist/{product}/add', [\App\Http\Controllers\WishListController::class, 'add'])->name('wishlist.add');
+    Route::delete('wishlist/{product}/delete', [\App\Http\Controllers\WishListController::class, 'delete'])->name('wishlist.delete');
 });
 
 Route::middleware('auth')->name('account.')->prefix('account')->group(function() {
@@ -43,6 +45,8 @@ Route::middleware('auth')->name('account.')->prefix('account')->group(function()
     Route::put('{user}', [\App\Http\Controllers\Account\UserController::class, 'update'])
         ->name('update')
         ->middleware('can:update,user');
+
+    Route::get('wishlist', \App\Http\Controllers\Account\WishListController::class)->name('wishlist');
 });
 
 Route::get('/dashboard', function() {
