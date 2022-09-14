@@ -30,11 +30,27 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('categories.index') }}">{{ __('Categories') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('products.index') }}">{{ __('Products') }}</a>
+                        </li>
+                        @auth
+                            @if(Request::is('admin/*'))
+                                @include('navigations.admin')
+                            @endif
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('cart') }}">
+                                {{ __('Cart') }} @if(Cart::instance('cart')->count() > 0) -
+                                <strong>{{ Cart::instance('cart')->count() }}</strong> @endif
+                            </a>
+                        </li>
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
@@ -55,6 +71,9 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('account.index') }}">
+                                        {{ __('Account') }}
+                                    </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -76,5 +95,6 @@
             @yield('content')
         </main>
     </div>
+    @stack('footer-scripts')
 </body>
 </html>

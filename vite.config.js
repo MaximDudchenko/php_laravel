@@ -7,6 +7,10 @@ export default defineConfig({
             input: [
                 'resources/sass/app.scss',
                 'resources/js/app.js',
+                'resources/js/images-preview.js',
+                'resources/js/images-actions.js',
+                'resources/js/product-actions.js',
+                'resources/js/paypal-payment.js'
             ],
             refresh: true,
         }),
