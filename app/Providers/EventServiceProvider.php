@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\OrderCreatedEvent;
+use App\Listeners\OrderCreatedListener;
 use App\Models\Product;
 use App\Observers\ProductObserver;
 use Illuminate\Auth\Events\Registered;
@@ -20,6 +22,9 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        OrderCreatedEvent::class => [
+            OrderCreatedListener::class
+        ]
     ];
 
     /**
