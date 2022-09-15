@@ -66,7 +66,7 @@ class PaypalPaymentController extends Controller
 
             DB::commit();
 
-            return response()->json($result);
+            return response()->json(['error' => "Some error here"], 422);
         } catch (\Exception $exception) {
             DB::rollBack();
             logs()->warning($exception);

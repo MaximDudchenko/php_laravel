@@ -34,9 +34,13 @@ class OrderRepository implements Contracts\OrderRepositoryContract
     public function setTransaction(string $transactionOrderId, TransactionDataAdapter $adapter): Order
     {
         $order = Order::where('vendor_order_id', $transactionOrderId)->firstOrFail();
+        $transaction = $order->transaction()->create((array) $adapter);
 
         if ($adapter->status === self::ORDER_STATUSES['completed']) {
-            $order->update(['status_id' => OrderStatus::paidStatus()->firstOrFail()?->id]);
+            $order->update([
+                'status_id' => OrderStatus::paidStatus()->firstOrFail()?->id,
+                'transaction_id' => $transaction->id
+            ]);
         }
 
         $order->transaction()->create((array) $adapter);

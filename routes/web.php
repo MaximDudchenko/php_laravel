@@ -44,6 +44,8 @@ Route::middleware('auth')->group(function() {
 
     Route::get('checkout', \App\Http\Controllers\CheckoutController::class)->name('checkout');
     Route::post('order', \App\Http\Controllers\OrdersController::class)->name('order.create');
+    Route::get('/order/{order}/invoice', \App\Http\Controllers\Invoices\DownloadInvoiceController::class)
+        ->name('orders.generate.invoice');
 });
 
 Route::middleware('auth')->name('account.')->prefix('account')->group(function() {

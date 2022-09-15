@@ -73,6 +73,7 @@ paypal.Buttons({
             });
     },
 
+    // Call your server to finalize the transaction
     onApprove: function (data, actions) {
         if (data.hasOwnProperty('orderID')) {
             return fetch(`/paypal/order/${data.orderID}/capture`, {
