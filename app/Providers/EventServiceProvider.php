@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Events\OrderCreatedEvent;
 use App\Listeners\OrderCreatedListener;
+use App\Models\Order;
 use App\Models\Product;
+use App\Observers\OrdersObserver;
 use App\Observers\ProductObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -27,6 +29,11 @@ class EventServiceProvider extends ServiceProvider
         ]
     ];
 
+    protected $observers = [
+        Product::class => [ProductObserver::class],
+        Order::class => [OrdersObserver::class]
+    ];
+
     /**
      * Register any events for your application.
      *
@@ -34,7 +41,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Product::observe(ProductObserver::class);
+        //
     }
 
     /**

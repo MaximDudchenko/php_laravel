@@ -10,6 +10,9 @@
                 <br>
             </div>
             <div class="col-md-12">
+                @empty($user->telegram_id)
+                    @include('accounts.parts.telegram')
+                @endempty
                 <div class="album py-5 bg-light">
                     <div class="container">
                         <div class="row">
@@ -49,6 +52,10 @@
                                     <tr>
                                         <td scope="row" class="text-center">{{__('Balance')}}</td>
                                         <td class="text-center"> {{ $user->balance }} </td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="row" class="text-center">{{__('Telegram ID')}}</td>
+                                        <td class="text-center"> {{ $user->telegram_id }} </td>
                                     </tr>
                                     </tbody>
                                 </table>
