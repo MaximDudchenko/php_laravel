@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -19,12 +20,14 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'role_id',
+        'balance',
         'name',
         'surname',
         'birthdate',
         'phone',
         'email',
         'password',
+        'telegram_id'
     ];
 
     /**
@@ -49,5 +52,37 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function wishes()
+    {
+        return $this->belongsToMany(
+            Product::class,
+            'wish_list',
+            'user_id',
+            'product_id'
+        );
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function addToWish(Product $product)
+    {
+        $this->wishes()->attach($product);
+    }
+
+    public function removeFromWish(Product $product)
+    {
+        $this->wishes()->detach($product);
+    }
+
+    public function fullName(): Attribute
+    {
+        return new Attribute(
+            get: fn() => ucfirst($this->attributes['name']) . ' ' . ucfirst($this->attributes['surname'])
+        );
     }
 }

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->foreignId('role_id')->constrained('roles');
+            $table->unsignedFloat('balance')->default(0);
             $table->string('name', 35);
             $table->string('surname', 50);
             $table->date('birthdate');

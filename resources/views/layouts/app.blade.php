@@ -12,9 +12,10 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+{{--    <link href="{{ asset('css/iziToast.css') }}" rel="stylesheet">--}}
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/css/iziToast.css', 'resources/js/iziToast.js'])
 </head>
 <body>
     <div id="app">
@@ -30,11 +31,27 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('categories.index') }}">{{ __('Categories') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('products.index') }}">{{ __('Products') }}</a>
+                        </li>
+                        @auth
+                            @if(Request::is('admin/*'))
+                                @include('navigations.admin')
+                            @endif
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('cart') }}">
+                                {{ __('Cart') }} @if(Cart::instance('cart')->count() > 0) -
+                                <strong>{{ Cart::instance('cart')->count() }}</strong> @endif
+                            </a>
+                        </li>
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
@@ -55,6 +72,9 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('account.index') }}">
+                                        {{ __('Account') }}
+                                    </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -73,8 +93,26 @@
         </nav>
 
         <main class="py-4">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        @if(session('success'))
+                            @php
+                                notify()->success(session('success'))
+                            @endphp
+                        @endif
+                        @if(session('warn'))
+                            @php
+                                notify()->warning(session('warn'))
+                            @endphp
+                        @endif
+                    </div>
+                </div>
+            </div>
             @yield('content')
         </main>
     </div>
+    @include('vendor.lara-izitoast.toast')
+    @stack('footer-scripts')
 </body>
 </html>
