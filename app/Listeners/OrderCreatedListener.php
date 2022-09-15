@@ -26,6 +26,6 @@ class OrderCreatedListener
      */
     public function handle($event)
     {
-        OrderCreatedNotificationJob::dispatch($event->order)->onQueue('emails');
+        OrderCreatedNotificationJob::dispatchSync($event->order)->onQueue('telegram');
     }
 }

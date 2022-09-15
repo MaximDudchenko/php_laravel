@@ -20,6 +20,7 @@ class FileStorageService implements FileStorageServiceContract
         $filePath = 'public/' . static::randomName() . '.' . $file->getClientOriginalExtension();
 
         Storage::put($filePath, File::get($file));
+        Storage::setVisibility($filePath, 'public');
 
         return $filePath;
     }
