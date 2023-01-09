@@ -17,7 +17,7 @@
                 </thead>
                 <tbody>
                 @foreach($products as $product)
-                    <tr>
+                    <tr id="product-row">
                         <th scope="col">{{ $product->id }}</th>
                         <th scope="col">
                             <img src="{{ $product->thumbnailUrl }}" alt="Preview" width="30" height="50">
@@ -31,6 +31,16 @@
                         <th scope="col">{{ $product->SKU }}</th>
                         <th scope="col">{{ $product->price }}</th>
                         <th scope="col">{{ $product->in_stock }}</th>
+                        <th scope="col">
+                            <a href="{{ route('admin.products.edit', $product) }}" class="btn btn-outline-secondary form-control">
+                                {{ __('Edit') }}
+                            </a>
+                            <form action="{{ route('admin.products.destroy', $product) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <input type="submit" class="btn btn-outline-danger form-control" value="Delete">
+                            </form>
+                        </th>
                     </tr>
                 @endforeach
                 </tbody>
@@ -38,7 +48,5 @@
             {{ $products->links() }}
         </div>
     </div>
-
-
-
 @endsection
+

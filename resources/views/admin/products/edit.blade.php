@@ -16,16 +16,17 @@
             </div>
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Create product') }}</div>
+                    <div class="card-header">{{ __('Edit product') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('admin.products.store') }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('admin.products.update', $product) }}" enctype="multipart/form-data">
                             @csrf
+                            @method('PUT')
                             <div class="row mb-3">
                                 <label for="title" class="col-md-4 col-form-label text-md-end">{{ __('Title') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title') }}" required autocomplete="title" autofocus>
+                                    <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ $product->title }}" required autocomplete="title" autofocus>
 
                                     @error('title')
                                     <span class="invalid-feedback" role="alert">
@@ -41,7 +42,9 @@
                                 <div class="col-md-6">
                                     <select name="category" id="category" class="form-control @error('category') is-invalid @enderror">
                                         @foreach($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                            <option value="{{ $category->id }}"
+                                                {{ $category->id === $product->category->id ? 'selected' : '' }}
+                                            >{{ $category->name }}</option>
                                         @endforeach
                                     </select>
 
@@ -57,7 +60,7 @@
                                 <label for="SKU" class="col-md-4 col-form-label text-md-end">{{ __('SKU') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="SKU" type="text" class="form-control @error('SKU') is-invalid @enderror" name="SKU" value="{{ old('SKU') }}" required autocomplete="SKU" autofocus>
+                                    <input id="SKU" type="text" class="form-control @error('SKU') is-invalid @enderror" name="SKU" value="{{ $product->SKU }}" required autocomplete="SKU" autofocus>
 
                                     @error('SKU')
                                     <span class="invalid-feedback" role="alert">
@@ -71,7 +74,7 @@
                                 <label for="price" class="col-md-4 col-form-label text-md-end">{{ __('Price') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="price" type="text" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') }}" required autocomplete="price" autofocus>
+                                    <input id="price" type="text" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ $product->price }}" required autocomplete="price" autofocus>
 
                                     @error('price')
                                     <span class="invalid-feedback" role="alert">
@@ -85,7 +88,7 @@
                                 <label for="discount" class="col-md-4 col-form-label text-md-end">{{ __('Discount') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="discount" type="number" class="form-control @error('discount') is-invalid @enderror" name="discount" value="{{ old('discount') }}" required autocomplete="discount" autofocus>
+                                    <input id="discount" type="number" class="form-control @error('discount') is-invalid @enderror" name="discount" value="{{ $product->discount }}" required autocomplete="discount" autofocus>
 
                                     @error('discount')
                                     <span class="invalid-feedback" role="alert">
@@ -99,7 +102,7 @@
                                 <label for="in_stock" class="col-md-4 col-form-label text-md-end">{{ __('In Stock') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="in_stock" type="number" class="form-control @error('in_stock') is-invalid @enderror" name="in_stock" value="{{ old('in_stock') }}" required autocomplete="in_stock" autofocus>
+                                    <input id="in_stock" type="number" class="form-control @error('in_stock') is-invalid @enderror" name="in_stock" value="{{ $product->in_stock }}" required autocomplete="in_stock" autofocus>
 
                                     @error('in_stock')
                                     <span class="invalid-feedback" role="alert">
@@ -113,8 +116,8 @@
                                 <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Description') }}</label>
 
                                 <div class="col-md-6">
-                                    <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror" required autocomplete="description" cols="30" rows="10">
-                                        {{ old('description') }}
+                                    <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror" required cols="30" rows="10">
+                                        {{ $product->description }}
                                     </textarea>
 
                                     @error('description')
@@ -129,8 +132,8 @@
                                 <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Short description') }}</label>
 
                                 <div class="col-md-6">
-                                    <textarea name="short_description" id="short_description" class="form-control @error('short_description') is-invalid @enderror" autocomplete="short_description" cols="30" rows="10">
-                                        {{ old('short_description') }}
+                                    <textarea name="short_description" id="short_description" class="form-control @error('short_description') is-invalid @enderror" cols="30" rows="10">
+                                        {{ $product->short_description }}
                                     </textarea>
 
                                     @error('short_description')
@@ -156,7 +159,7 @@
 
                             <div class="row mb-3 d-flex justify-content-center">
                                 <div class="col-md-6">
-                                    <img src="#" id="thumbnail-preview" class="" alt="">
+                                    <img src="{{ $product->thumbnailUrl }}" id="thumbnail-preview" class="" alt="">
                                 </div>
                             </div>
 
@@ -169,14 +172,23 @@
 
                             <div class="row mb-3 d-flex justify-content-center">
                                 <div class="col-md-6">
-                                    <div class="images-wrapper"></div>
+                                    <div class="images-wrapper">
+                                        @foreach($product->images as $image)
+                                            @if (Storage::has($image->path))
+                                                <div class="col-sm-12 d-flex justify-content-center align-items-center">
+                                                    <img src="{{ $image->url }}" class="card-img-top" style="max-width: 50%; margin: 0 auto; display: inline-block;">
+                                                    <a class="btn btn-outline-danger remove-product-image" data-route="{{ route('ajax.images.delete', $image->id) }}">Delete</a>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="row mb-0">
                                 <div class="col-md-6 offset-md-4 d-flex justify-content-end">
                                     <button type="submit" class="btn btn-primary">
-                                        {{ __(' Create ') }}
+                                        {{ __(' Update ') }}
                                     </button>
                                 </div>
                             </div>
@@ -187,5 +199,5 @@
         </div>
     </div>
     <!-- Scripts -->
-    @vite(['resources/js/images-preview.js'])
+    @vite(['resources/js/images-preview.js', 'resources/js/images-actions.js'])
 @endsection
