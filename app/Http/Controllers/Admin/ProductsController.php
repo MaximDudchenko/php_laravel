@@ -101,7 +101,7 @@ class ProductsController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             logs()->warning($e);
-            return redirect()->back()->with('warn', 'Product not created. See logs');
+            return redirect()->back()->with('warn', 'Product not updated. See logs');
         }
     }
 
@@ -127,6 +127,5 @@ class ProductsController extends Controller
             logs()->warning($e);
             return redirect()->route('admin.products.index')->with('warn', 'Error');
         }
-
     }
 }

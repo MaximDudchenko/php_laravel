@@ -113,7 +113,7 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Description') }}</label>
+                                <label for="description" class="col-md-4 col-form-label text-md-end">{{ __('Description') }}</label>
 
                                 <div class="col-md-6">
                                     <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror" required cols="30" rows="10">
@@ -129,7 +129,7 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Short description') }}</label>
+                                <label for="short_description" class="col-md-4 col-form-label text-md-end">{{ __('Short description') }}</label>
 
                                 <div class="col-md-6">
                                     <textarea name="short_description" id="short_description" class="form-control @error('short_description') is-invalid @enderror" cols="30" rows="10">
